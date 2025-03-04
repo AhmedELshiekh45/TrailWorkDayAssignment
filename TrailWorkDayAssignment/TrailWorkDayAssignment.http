@@ -1,0 +1,6 @@
+@TrailWorkDayAssignment_HostAddress = http://localhost:5085
+
+GET {{TrailWorkDayAssignment_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
