@@ -8,8 +8,7 @@ using ServiceLayer.Services.EnrollementServices;
 
 namespace Presentaion.EndPoints.EnrollmentEndPoints
 {
-    [HttpPost("/api/enrollments")]
-    [AllowAnonymous]
+   
     public class Create:Endpoint<EnrollmentDto,Results<Ok<EnrollmentDto>,Conflict<string>>>
     {
         private readonly IEnrollmentService _service;
@@ -17,6 +16,13 @@ namespace Presentaion.EndPoints.EnrollmentEndPoints
         public Create(IEnrollmentService service)
         {
             this._service = service;
+        }
+        public override void Configure()
+        {
+            Post("/api/enrollments");
+            AllowAnonymous();
+            Validator<EnrollmentDtoValidator>(); // Attach the validator
+
         }
         public async override Task<Results<Ok<EnrollmentDto>, Conflict<string>>> ExecuteAsync(EnrollmentDto req, CancellationToken ct)
         {

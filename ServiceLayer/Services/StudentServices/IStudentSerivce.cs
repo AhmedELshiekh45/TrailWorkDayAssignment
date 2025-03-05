@@ -12,6 +12,6 @@ namespace ServiceLayer.Services.StudentServices
     public interface IStudentSerivce:IGenericService<StudentDto,Student>
     {
         ValueTask<bool> Exist(int id);
-
+        ValueTask<StudentReportDto> GetReport(int id);
     }
 }

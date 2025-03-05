@@ -19,6 +19,8 @@ namespace Presentaion.EndPoints.StudentEndpoints
         {
             Put("/api/students/{id}");
             AllowAnonymous();
+            Validator<StudentDtoValidator>(); // Attach the validator
+
         }
         public override async Task HandleAsync(StudentDto req, CancellationToken ct)
         {

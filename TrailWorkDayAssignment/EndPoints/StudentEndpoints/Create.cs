@@ -18,6 +18,8 @@ namespace Presentaion.EndPoints.StudentEndpoints
         {
             Post("api/students");
             AllowAnonymous();
+            Validator<StudentDtoValidator>(); // Attach the validator
+
         }
         public override async Task HandleAsync(StudentDto req, CancellationToken ct)
         {

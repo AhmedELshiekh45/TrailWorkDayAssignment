@@ -9,7 +9,9 @@ namespace Domain.DTOS
 {
     public class ClassDto
     {
-        public int Id { get; set; }
+        private static int _nextId = 1; // عداد لتوليد الـ Id
+
+        public int Id { get; set; } = _nextId++; // توليد الـ Id تلقائيًا
         public string Name { get; set; }
         public string Teacher { get; set; }
         public string Description { get; set; }

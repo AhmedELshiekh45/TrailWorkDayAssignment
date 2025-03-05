@@ -21,6 +21,8 @@
             {
                 Put("/api/classes/{id}");
                 AllowAnonymous();
+                Validator<ClassDtoValidator>(); // Attach the validator
+
             }
             public override async Task HandleAsync(ClassDto req, CancellationToken ct)
             {

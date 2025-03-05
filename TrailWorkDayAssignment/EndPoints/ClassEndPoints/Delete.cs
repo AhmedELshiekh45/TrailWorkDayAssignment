@@ -11,6 +11,7 @@
     {
         [HttpDelete("/api/classes/{id}")]
         [AllowAnonymous]
+        
         public class Delete : Ep.NoReq.NoRes
         {
             private readonly IClassService service;
@@ -20,6 +21,7 @@
 
                 this.service = service;
             }
+
             public override async Task HandleAsync(CancellationToken ct)
             {
                 int ID = Route<int>("id");  // Read route value

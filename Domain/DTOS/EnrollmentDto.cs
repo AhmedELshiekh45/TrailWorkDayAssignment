@@ -8,7 +8,9 @@ namespace Domain.DTOS
 {
     public class EnrollmentDto
     {
-        public int Id { get; set; }
+        private static int _nextId = 1; // عداد لتوليد الـ Id
+
+        public int Id { get; set; } = _nextId++; // توليد الـ Id تلقائيًا
         public int StudentId { get; set; }
         public int ClassId { get; set; }
         public DateTime? EnrollmentDate { get; set; }= DateTime.Now;

@@ -10,16 +10,17 @@ namespace Presentaion.EndPoints.StudentEndpoints
     [AllowAnonymous]
     public class Report : Ep.NoReq.Res<StudentReportDto>
     {
-        private readonly IStudentSerivce studentSerivce;
+        private readonly IStudentSerivce _studentSerivce;
 
         public Report(IStudentSerivce studentSerivce)
         {
-            this.studentSerivce = studentSerivce;
+            this._studentSerivce = studentSerivce;
         }
 
-        public override Task<StudentReportDto> ExecuteAsync(CancellationToken ct)
+        public override async Task<StudentReportDto> ExecuteAsync(CancellationToken ct)
         {
             var  Id = Route<int>("studentid");
+         return  await  _studentSerivce.GetReport(Id);
             
         }
     }

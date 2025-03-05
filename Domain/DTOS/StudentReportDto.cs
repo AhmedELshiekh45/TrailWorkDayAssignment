@@ -8,7 +8,7 @@ namespace Domain.DTOS
 {
     public class StudentReportDto
     {
-        public List<ClassMarkDto>? StudentClassMarks { get; set; }
+        public List<ClassMarkDto>? StudentClassMarks { get; set; } = new List<ClassMarkDto>();
         public decimal OverAllAverageMarksForAllClasses => StudentClassMarks.Select(p => p.ClassMark)?.Average()??0;
 
 

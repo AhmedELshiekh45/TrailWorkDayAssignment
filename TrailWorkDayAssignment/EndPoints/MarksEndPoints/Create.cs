@@ -9,8 +9,7 @@ using ServiceLayer.Services.MarkServces;
 
 namespace Presentaion.EndPoints.MarksEndPoints
 {
-    [HttpPost("/api/marks")]
-    [AllowAnonymous]
+  
     public class Create : Endpoint<MarkDto, Results<Ok<MarkDto>, Conflict<string>>>
     {
         private readonly IMarkService _markservice;
@@ -21,6 +20,12 @@ namespace Presentaion.EndPoints.MarksEndPoints
             this._markservice = markservice;
             this._enrollmentservice = enrollmentservice;
            
+        }
+        public override void Configure()
+        {
+            Post("/api/marks");
+            AllowAnonymous();
+            Validator<MarkDtoValidator>(); // Attach the validator
         }
         public async override Task<Results<Ok<MarkDto>, Conflict<string>>> ExecuteAsync(MarkDto req, CancellationToken ct)
         {
