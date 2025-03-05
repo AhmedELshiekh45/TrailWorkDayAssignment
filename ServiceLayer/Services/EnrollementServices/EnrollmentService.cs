@@ -12,7 +12,7 @@ using ServiceLayer.Generic;
 
 namespace ServiceLayer.Services.EnrollementServices
 {
-    public class EnrollmentService : IGenericService<EnrollmentDto, Enrollment>
+    public class EnrollmentService : IEnrollmentService
     {
         private readonly IGenericRepository<Enrollment> _repository;
         private readonly IMapper _mapper;
@@ -26,16 +26,16 @@ namespace ServiceLayer.Services.EnrollementServices
         {
             await _repository.CreateAsync(_mapper.Map<Enrollment>(entity));
         }
-
+       
         public async ValueTask DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);
         }
 
-        public async ValueTask<bool> Exist(int studentid, int classid)
+        public async ValueTask<bool> Exist(int classid, int studentid)
         {
-            var query = await _repository.GetAsQuery();
-            return query.Any(p => p.ClassId == classid && p.StudentId == studentid);
+            var result = await _repository.Exist(p => p.ClassId == classid && p.StudentId == studentid);
+          return result;
         }
 
 

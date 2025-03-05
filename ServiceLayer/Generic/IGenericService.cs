@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Generic
 {
-    public interface IGenericService<T,TBaseEntity> where T : class
+    public interface IGenericService<TDto,TEntity> where TDto : class
     {
-        ValueTask<IEnumerable<T>> GetAllAsync(int pageNumber, int pageSize, Expression<Func<TBaseEntity, bool>> predicate = null);
-        ValueTask<IEnumerable<T>> GetAllAsync( Expression<Func<TBaseEntity, bool>> predicate = null);
-        ValueTask<T?> GetByIdAsync(int id);
-        ValueTask AddAsync(T entity);
-        ValueTask UpdateAsync(T entity);
+        ValueTask<IEnumerable<TDto>> GetAllAsync(int pageNumber, int pageSize, Expression<Func<TEntity, bool>> predicate = null);
+        ValueTask<TDto?> GetByIdAsync(int id);
+        ValueTask AddAsync(TDto entity);
+        ValueTask UpdateAsync(TDto entity);
         ValueTask DeleteAsync(int id);
     }
 

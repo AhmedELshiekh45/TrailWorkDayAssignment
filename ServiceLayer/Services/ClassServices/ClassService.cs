@@ -13,19 +13,19 @@ using ServiceLayer.Generic;
 
 namespace ServiceLayer.Services.ClassServices
 {
-    public class ClassService : IGenericService<MarkDto,Mark>
+    public class ClassService : IClassService
     {
-        private readonly IGenericRepository<Mark> _repository;
+        private readonly IGenericRepository<Class> _repository;
         private readonly IMapper _mapper;
 
-        public ClassService(IGenericRepository<Mark> repository, IMapper mapper)
+        public ClassService(IGenericRepository<Class> repository, IMapper mapper)
         {
             this._repository = repository;
             this._mapper = mapper;
         }
-        public async ValueTask AddAsync(MarkDto entity)
+        public async ValueTask AddAsync(ClassDto entity)
         {
-            await _repository.CreateAsync(_mapper.Map<Mark>(entity));
+            await _repository.CreateAsync(_mapper.Map<Class>(entity));
         }
 
         public async ValueTask DeleteAsync(int id)
@@ -33,32 +33,28 @@ namespace ServiceLayer.Services.ClassServices
             await _repository.DeleteAsync(id);
         }
 
-        public ValueTask<bool> Exist()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async ValueTask<IEnumerable<MarkDto>> GetAllAsync(int pageNumber, int pageSize, Expression<Func<Mark, bool>> predicate = null)
+      
+        public async ValueTask<IEnumerable<ClassDto>> GetAllAsync(int pageNumber, int pageSize, Expression<Func<Class, bool>> predicate = null)
         {
            
             var result = await _repository.GetAllAsync(pageNumber, pageSize,predicate);
-            var Dtos = _mapper.Map<IEnumerable<MarkDto>>(result);
+            var Dtos = _mapper.Map<IEnumerable<ClassDto>>(result);
             return Dtos;
         }
 
-        public ValueTask<IEnumerable<MarkDto>> GetAllAsync(Expression<Func<Mark, bool>> predicate = null)
+        public async ValueTask<bool> Exist(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.Exist(p => p.Id == id);
+
+        }
+        public async ValueTask<ClassDto?> GetByIdAsync(int id)
+        {
+            return _mapper.Map<ClassDto?>(await _repository.GetByIdAsync(id));
         }
 
-        public async ValueTask<MarkDto?> GetByIdAsync(int id)
+        public async ValueTask UpdateAsync(ClassDto entity)
         {
-            return _mapper.Map<MarkDto?>(await _repository.GetByIdAsync(id));
-        }
-
-        public async ValueTask UpdateAsync(MarkDto entity)
-        {
-           await _repository.UpdateAsync(_mapper.Map<Mark>(entity));
+           await _repository.UpdateAsync(_mapper.Map<Class>(entity));
         }
     }
 }

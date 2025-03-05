@@ -14,7 +14,7 @@ namespace ServiceLayer.Services.ClassServices.MappingProfiles
         public ClassProfile()
         {
 
-            CreateMap<EnrollmentDto, Enrollment>()
+            CreateMap<ClassDto, Class>()
                 .ReverseMap();
 
             CreateMap<Mark, MarkDto>()

@@ -5,6 +5,7 @@
     using FastEndpoints;
     using Microsoft.AspNetCore.Authorization;
     using ServiceLayer.Generic;
+    using ServiceLayer.Services.ClassServices;
 
     namespace Presentaion.EndPoints.StudentEndpoints
     {
@@ -12,9 +13,9 @@
         [AllowAnonymous]
         public class Delete : Ep.NoReq.NoRes
         {
-            private readonly IGenericService<ClassDto, Mark> service;
+            private readonly IClassService service;
 
-            public Delete(IGenericService<ClassDto, Mark> service)
+            public Delete(IClassService service)
             {
 
                 this.service = service;

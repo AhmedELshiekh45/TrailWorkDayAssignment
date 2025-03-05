@@ -12,19 +12,19 @@ using ServiceLayer.Generic;
 
 namespace ServiceLayer.Services.StudentServices
 {
-    public class StudentService : IGenericService<MarkDto,Mark>
+    public class StudentService : IStudentSerivce
     {
-        private readonly IGenericRepository<Mark> _repository;
+        private readonly IGenericRepository<Student> _repository;
         private readonly IMapper _mapper;
 
-        public StudentService(IGenericRepository<Mark> repository, IMapper mapper)
+        public StudentService(IGenericRepository<Student> repository, IMapper mapper)
         {
             this._repository = repository;
             this._mapper = mapper;
         }
-        public ValueTask AddAsync(MarkDto entity)
+        public ValueTask AddAsync(StudentDto entity)
         {
-            _repository.CreateAsync(_mapper.Map<Mark>(entity));
+            _repository.CreateAsync(_mapper.Map<Student>(entity));
             return ValueTask.CompletedTask;
         }
 
@@ -34,32 +34,30 @@ namespace ServiceLayer.Services.StudentServices
             return ValueTask.CompletedTask;
         }
 
-        public ValueTask<bool> Exist()
+        public async ValueTask<bool> Exist(int id)
         {
-            throw new NotImplementedException();
+            return  await _repository.Exist(p => p.Id == id);
+            
         }
 
-        public async ValueTask<IEnumerable<MarkDto>> GetAllAsync(int pageNumber = 0, int pageSize = 10, Expression<Func<Mark, bool>> predicate = null)
+        public async ValueTask<IEnumerable<StudentDto>> GetAllAsync(int pageNumber = 0, int pageSize = 10, Expression<Func<Student, bool>> predicate = null)
         {
             var entites = await _repository.GetAllAsync(pageNumber, pageSize,predicate);
-            var Dtos = _mapper.Map<IEnumerable<MarkDto>>(entites);
+            var Dtos = _mapper.Map<IEnumerable<StudentDto>>(entites);
 
             return Dtos;
         }
 
-        public ValueTask<IEnumerable<MarkDto>> GetAllAsync(Expression<Func<Mark, bool>> predicate = null)
-        {
-            throw new NotImplementedException();
-        }
+     
 
        
-        public async ValueTask<MarkDto?> GetByIdAsync(int id)
+        public async ValueTask<StudentDto?> GetByIdAsync(int id)
         {
-           return _mapper.Map<MarkDto>(await _repository.GetByIdAsync(id));
+           return _mapper.Map<StudentDto>(await _repository.GetByIdAsync(id));
         }
-        public ValueTask UpdateAsync(MarkDto entity)
+        public ValueTask UpdateAsync(StudentDto entity)
         {
-           var student = _mapper.Map<Mark>(entity);
+           var student = _mapper.Map<Student>(entity);
             _repository.UpdateAsync(student);
             return ValueTask.CompletedTask;
         }

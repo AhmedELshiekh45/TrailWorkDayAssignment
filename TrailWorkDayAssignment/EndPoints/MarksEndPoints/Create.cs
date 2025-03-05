@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using ServiceLayer.Generic;
 using ServiceLayer.Services.EnrollementServices;
+using ServiceLayer.Services.MarkServces;
 
 namespace Presentaion.EndPoints.MarksEndPoints
 {
@@ -12,10 +13,10 @@ namespace Presentaion.EndPoints.MarksEndPoints
     [AllowAnonymous]
     public class Create : Endpoint<MarkDto, Results<Ok<MarkDto>, Conflict<string>>>
     {
-        private readonly IGenericService<MarkDto, Mark> _markservice;
-        private readonly EnrollmentService _enrollmentservice;
+        private readonly IMarkService _markservice;
+        private readonly IEnrollmentService _enrollmentservice;
 
-        public Create(IGenericService<MarkDto,Mark> markservice, EnrollmentService enrollmentservice)
+        public Create(IMarkService markservice, IEnrollmentService enrollmentservice)
         {
             this._markservice = markservice;
             this._enrollmentservice = enrollmentservice;
@@ -24,9 +25,9 @@ namespace Presentaion.EndPoints.MarksEndPoints
         public async override Task<Results<Ok<MarkDto>, Conflict<string>>> ExecuteAsync(MarkDto req, CancellationToken ct)
         {
             var student = await _enrollmentservice.Exist(req.ClassId, req.StudentId);
-            if (student)
+            if (!student)
             {
-                return TypedResults.Conflict("this is already exists");
+                return TypedResults.Conflict("this student not enrolled in this class please enroll and then retry");
             }
            await _markservice.AddAsync(req);
             return TypedResults.Ok(req);

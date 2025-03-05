@@ -5,32 +5,33 @@
     using FastEndpoints;
     using Microsoft.AspNetCore.Http.HttpResults;
     using ServiceLayer.Generic;
+    using ServiceLayer.Services.ClassServices;
 
     namespace Presentaion.EndPoints.StudentEndpoints
     {
-        public class Update : Ep.Req<ClassDto>.Res<NotFound>
+        public class Update : Ep.Req<ClassDto>.Res<Results<Ok<string>,NotFound>>
         {
-            private readonly IGenericService<ClassDto, Class> service;
+            private readonly IClassService service;
 
-            public Update(IGenericService<ClassDto, Class> service)
+            public Update(IClassService service)
             {
                 this.service = service;
             }
             public override void Configure()
             {
-                Put("/api/classes/id");
+                Put("/api/classes/{id}");
                 AllowAnonymous();
             }
             public override async Task HandleAsync(ClassDto req, CancellationToken ct)
             {
-                int studentId = Route<int>("id");  // Read route value
-                var student = await service.GetByIdAsync(studentId);
+                int id = Route<int>("id");  // Read route value
+                var student = await service.GetByIdAsync(id);
                 if (student == null)
                 {
                     await SendNotFoundAsync();
                 }
                 await service.UpdateAsync(req);
-
+                await SendAsync(TypedResults.Ok("Updated SuccessFully"),200);
             }
         }
     }

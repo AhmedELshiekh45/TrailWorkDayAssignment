@@ -10,17 +10,17 @@ using Domain.Models;
 using Domain.Repositories.GenericRepositories;
 using ServiceLayer.Generic;
 
-namespace ServiceLayer.Services.NewFolder.MarkServces
+namespace ServiceLayer.Services.MarkServces
 {
-    public class MarkService : IGenericService<MarkDto, Mark>
+    public class MarkService : IMarkService
     {
         private readonly IGenericRepository<Mark> _repository;
         private readonly IMapper _mapper;
 
         public MarkService(IGenericRepository<Mark> repository, IMapper mapper)
         {
-            this._repository = repository;
-            this._mapper = mapper;
+            _repository = repository;
+            _mapper = mapper;
         }
         public ValueTask AddAsync(MarkDto entity)
         {
@@ -34,14 +34,13 @@ namespace ServiceLayer.Services.NewFolder.MarkServces
             return ValueTask.CompletedTask;
         }
 
-        public ValueTask<bool> Exist()
-        {
-            throw new NotImplementedException();
-        }
+     
         public async ValueTask<decimal> GetAvargeMarksForClass(int classid)
         {
             var result = await _repository.GetAsQuery();
             var result2 = result.Where(p => p.ClassId == classid).Select(p => p.TotalMark).ToList();
+            if (result2.Count == 0)
+                return 0;
             return result2.Average();
         }
         public async ValueTask<IEnumerable<MarkDto>> GetAllAsync(int pageNumber = 0, int pageSize = 10, Expression<Func<Mark, bool>> predicate = null)
@@ -51,10 +50,10 @@ namespace ServiceLayer.Services.NewFolder.MarkServces
 
             return Dtos;
         }
-
-        public ValueTask<IEnumerable<MarkDto>> GetAllAsync(Expression<Func<Mark, bool>> predicate = null)
+        public async ValueTask<bool> Exist(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.Exist(p => p.Id == id);
+
         }
 
         public async ValueTask<MarkDto?> GetByIdAsync(int id)

@@ -2,14 +2,15 @@
 using Domain.Models;
 using FastEndpoints;
 using ServiceLayer.Generic;
+using ServiceLayer.Services.StudentServices;
 
 namespace Presentaion.EndPoints.StudentEndpoints
 {
     public class Create:Ep.Req<StudentDto>.NoRes
     {
-        private readonly IGenericService<StudentDto,Student> _service;
+        private readonly IStudentSerivce _service;
 
-        public Create(IGenericService<StudentDto,Student> service)
+        public Create(IStudentSerivce service)
         {
             this._service = service;
         }

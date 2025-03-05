@@ -13,8 +13,9 @@ namespace Domain.Repositories.GenericRepositories
         ValueTask CreateAsync(TEntity entity);
         ValueTask UpdateAsync(TEntity entity);
         ValueTask DeleteAsync(int id);
+        ValueTask<bool> Exist(Func<TEntity, bool> predicate);
 
-        ValueTask<TEntity> GetByIdAsync(int id);
+        ValueTask<TEntity?> GetByIdAsync(int id);
         ValueTask<IEnumerable<TEntity>> GetAllAsync(int pagenumber,int pagesize, Expression<Func<TEntity, bool>> predicate = null);
         ValueTask<IQueryable<TEntity>> GetAsQuery();
     }

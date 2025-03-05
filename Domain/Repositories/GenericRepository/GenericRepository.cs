@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,12 @@ namespace Domain.Repositories.GenericRepository
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseClass
     {
-        private static readonly ConcurrentDictionary<int, TEntity> _entites = new();
+        private ConcurrentDictionary<int, TEntity> _entites;
 
+        public GenericRepository(ConcurrentDictionary<int, TEntity> entites)
+        {
+            this._entites = entites;
+        }
 
         public ValueTask CreateAsync(TEntity entity)
         {
@@ -42,13 +47,23 @@ namespace Domain.Repositories.GenericRepository
            return _entites.Values.AsQueryable();
         }
 
-        public async ValueTask<TEntity> GetByIdAsync(int id)
+        public async ValueTask<TEntity?> GetByIdAsync(int id)
         {
-            return _entites[id];
+            if (_entites.TryGetValue(id, out TEntity entity))
+            {
+                return entity;
+            }
+
+            return null; // Or throw a custom exception
         }
 
+        public async ValueTask<bool> Exist(Func<TEntity,bool> predicate)
+        {
+            return _entites.Values.Any(predicate);
+        }
         public ValueTask UpdateAsync(TEntity entity)
         {
+           
             _entites[entity.Id] = entity;
             return ValueTask.CompletedTask;
         }

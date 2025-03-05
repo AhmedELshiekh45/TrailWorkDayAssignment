@@ -4,14 +4,15 @@
     using Domain.Models;
     using FastEndpoints;
     using ServiceLayer.Generic;
+    using ServiceLayer.Services.ClassServices;
 
     namespace Presentaion.EndPoints.StudentEndpoints
     {
-        public class Create : Ep.Req<StudentDto>.NoRes
+        public class Create : Ep.Req<ClassDto>.NoRes
         {
-            private readonly IGenericService<StudentDto, Student> _service;
+            private readonly IClassService _service;
 
-            public Create(IGenericService<StudentDto, Student> service)
+            public Create(IClassService service)
             {
                 this._service = service;
             }
@@ -20,7 +21,7 @@
                 Post("/api/classes");
                 AllowAnonymous();
             }
-            public override async Task HandleAsync(StudentDto req, CancellationToken ct)
+            public override async Task HandleAsync(ClassDto req, CancellationToken ct)
             {
                 await _service.AddAsync(req);
                 await SendAsync(req, statusCode: 201);

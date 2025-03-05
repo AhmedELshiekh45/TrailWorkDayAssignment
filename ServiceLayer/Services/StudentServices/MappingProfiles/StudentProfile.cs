@@ -13,10 +13,10 @@ namespace ServiceLayer.Services.StudentServices.MappingProfile
     {
         public StudentProfile()
         {
-            CreateMap<MarkDto, Mark>()
+            CreateMap<StudentDto, Student>()
                 .ReverseMap();
 
-            CreateMap<MarkDto,Mark >()
+            CreateMap<EnrollmentDto,Enrollment >()
                 .ReverseMap();
             
           
